@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile - BLDEA Student</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/dashboard.css">
+    <link rel="stylesheet" href="/css/responsive.css">
+    <script src="/js/api.js"></script>
+    <script src="/js/auth.js"></script>
+    <script src="/js/student.js"></script>
+</head>
+<body>
+    <div class="app-container">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <span class="brand-title">🎓 Student Portal</span>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="/student/dashboard.html" class="nav-item">📊 Dashboard</a>
+                <a href="/student/profile.html" class="nav-item active">👤 My Profile</a>
+                <a href="/student/attendance.html" class="nav-item">📅 Attendance</a>
+                <a href="/student/marks.html" class="nav-item">📝 Internal Marks</a>
+                <a href="/student/materials.html" class="nav-item">📖 Study Materials</a>
+                <a href="/student/announcements.html" class="nav-item">📢 Announcements</a>
+                <a href="/student/documents.html" class="nav-item">📁 Documents</a>
+                <a href="javascript:logout()" class="nav-item logout">🚪 Logout</a>
+            </nav>
+        </aside>
+
+        <div class="main-wrapper">
+            <header class="header-topbar">
+                <div class="topbar-left">
+                    <button class="toggle-sidebar-btn" onclick="document.querySelector('.sidebar').classList.toggle('mobile-open')">☰</button>
+                    <h2>Student Profile</h2>
+                </div>
+            </header>
+
+            <main class="main-content">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Personal & Academic Details</h3>
+                    </div>
+                    <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));gap:1.5rem;padding:0.5rem 0;">
+                        <div>
+                            <label style="font-size:0.75rem;color:var(--text-muted);display:block;text-transform:uppercase;">Full Name</label>
+                            <div id="profile-name" style="font-size:1.125rem;font-weight:600;">-</div>
+                        </div>
+
+                        <div>
+                            <label style="font-size:0.75rem;color:var(--text-muted);display:block;text-transform:uppercase;">USN (University Seat Number)</label>
+                            <div id="profile-usn" style="font-size:1.125rem;font-weight:600;color:var(--primary);">-</div>
+                        </div>
+
+                        <div>
+                            <label style="font-size:0.75rem;color:var(--text-muted);display:block;text-transform:uppercase;">Registration Number</label>
+                            <div id="profile-reg" style="font-size:1.125rem;font-weight:600;">-</div>
+                        </div>
+
+                        <div>
+                            <label style="font-size:0.75rem;color:var(--text-muted);display:block;text-transform:uppercase;">Email Address</label>
+                            <div id="profile-email" style="font-weight:500;">-</div>
+                        </div>
+
+                        <div>
+                            <label style="font-size:0.75rem;color:var(--text-muted);display:block;text-transform:uppercase;">Phone Number</label>
+                            <div id="profile-phone" style="font-weight:500;">-</div>
+                        </div>
+
+                        <div>
+                            <label style="font-size:0.75rem;color:var(--text-muted);display:block;text-transform:uppercase;">Date of Birth</label>
+                            <div id="profile-dob" style="font-weight:500;">-</div>
+                        </div>
+
+                        <div>
+                            <label style="font-size:0.75rem;color:var(--text-muted);display:block;text-transform:uppercase;">Gender</label>
+                            <div id="profile-gender" style="font-weight:500;">-</div>
+                        </div>
+
+                        <div>
+                            <label style="font-size:0.75rem;color:var(--text-muted);display:block;text-transform:uppercase;">Department</label>
+                            <div id="profile-department" style="font-weight:600;">-</div>
+                        </div>
+
+                        <div>
+                            <label style="font-size:0.75rem;color:var(--text-muted);display:block;text-transform:uppercase;">Program</label>
+                            <div id="profile-program" style="font-weight:600;">-</div>
+                        </div>
+
+                        <div>
+                            <label style="font-size:0.75rem;color:var(--text-muted);display:block;text-transform:uppercase;">Academic Year & Semester</label>
+                            <div><span id="profile-academic-year">-</span> (<span id="profile-semester">-</span>)</div>
+                        </div>
+
+                        <div>
+                            <label style="font-size:0.75rem;color:var(--text-muted);display:block;text-transform:uppercase;">Current GPA</label>
+                            <div id="profile-gpa" style="font-size:1.25rem;font-weight:700;color:var(--success);">-</div>
+                        </div>
+
+                        <div>
+                            <label style="font-size:0.75rem;color:var(--text-muted);display:block;text-transform:uppercase;">Account Status</label>
+                            <div id="profile-status"><span class="badge badge-active">-</span></div>
+                        </div>
+                    </div>
+
+                    <div style="margin-top:1.5rem;padding-top:1rem;border-top:1px solid var(--border);">
+                        <label style="font-size:0.75rem;color:var(--text-muted);display:block;text-transform:uppercase;">Residential Address</label>
+                        <div id="profile-address" style="margin-top:0.25rem;">-</div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            if (checkAuth(["STUDENT"])) {
+                loadStudentProfile();
+            }
+        });
+    </script>
+</body>
+</html>

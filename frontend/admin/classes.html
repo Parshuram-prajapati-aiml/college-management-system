@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Classes Management - BLDEA Admin</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/dashboard.css">
+    <link rel="stylesheet" href="/css/responsive.css">
+    <script src="/js/api.js"></script>
+    <script src="/js/auth.js"></script>
+    <script src="/js/admin.js"></script>
+</head>
+<body>
+    <div class="app-container">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <span class="brand-title">🏛️ BLDEA Admin</span>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="/admin/dashboard.html" class="nav-item">📊 Dashboard</a>
+                <a href="/admin/users.html" class="nav-item">👤 Users</a>
+                <a href="/admin/students.html" class="nav-item">🎓 Students</a>
+                <a href="/admin/teachers.html" class="nav-item">👨‍🏫 Teachers</a>
+                <a href="/admin/departments.html" class="nav-item">🏢 Departments</a>
+                <a href="/admin/programs.html" class="nav-item">📜 Programs</a>
+                <a href="/admin/courses.html" class="nav-item">📚 Courses</a>
+                <a href="/admin/classes.html" class="nav-item active">🏫 Classes</a>
+                <a href="/admin/admissions.html" class="nav-item">📝 Admissions</a>
+                <a href="/admin/documents.html" class="nav-item">📁 Documents</a>
+                <a href="javascript:logout()" class="nav-item logout">🚪 Logout</a>
+            </nav>
+        </aside>
+
+        <div class="main-wrapper">
+            <header class="header-topbar">
+                <div class="topbar-left">
+                    <button class="toggle-sidebar-btn" onclick="document.querySelector('.sidebar').classList.toggle('mobile-open')">☰</button>
+                    <h2>Class Sections & Schedules</h2>
+                </div>
+                <div class="topbar-right">
+                    <button class="btn btn-primary" onclick="openAddClassModal()">+ Create Class Section</button>
+                </div>
+            </header>
+
+            <main class="main-content">
+                <div class="card">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Course</th>
+                                    <th>Program</th>
+                                    <th>Assigned Teacher</th>
+                                    <th>Semester (Year)</th>
+                                    <th>Schedule</th>
+                                    <th>Room</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="classes-tbody">
+                                <tr><td colspan="7" style="text-align:center;color:var(--text-muted);">Loading class sections...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Class Modal -->
+    <div id="class-modal" class="modal-backdrop">
+        <div class="modal">
+            <div class="modal-header">
+                <h3>Create Class Section</h3>
+                <button class="modal-close" onclick="closeModal('class-modal')">×</button>
+            </div>
+            <form onsubmit="saveClass(event)">
+                <div class="form-group">
+                    <label>Course *</label>
+                    <select id="class-course" class="form-control" required></select>
+                </div>
+                <div class="form-group">
+                    <label>Program *</label>
+                    <select id="class-prog" class="form-control" required></select>
+                </div>
+                <div class="form-group">
+                    <label>Assigned Teacher *</label>
+                    <select id="class-staff" class="form-control" required></select>
+                </div>
+                <div class="form-group">
+                    <label>Academic Year *</label>
+                    <input type="text" id="class-year" class="form-control" value="2025-2026" required>
+                </div>
+                <div class="form-group">
+                    <label>Semester *</label>
+                    <input type="text" id="class-semester" class="form-control" value="Semester 5" required>
+                </div>
+                <div class="form-group">
+                    <label>Schedule (e.g. Mon/Wed 10:00 AM)</label>
+                    <input type="text" id="class-schedule" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label>Room Number</label>
+                    <input type="text" id="class-room" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label>Capacity</label>
+                    <input type="number" id="class-capacity" class="form-control" value="60" required>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('class-modal')">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Create Section</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            if (checkAuth(["ADMIN"])) {
+                loadClasses();
+            }
+        });
+
+        async function openAddClassModal() {
+            const resC = await apiRequest("/api/courses");
+            if (resC && resC.ok) {
+                const courses = await resC.json();
+                document.getElementById("class-course").innerHTML = courses.map(c => `<option value="${c.course_id}">${escapeHtml(c.course_code)} - ${escapeHtml(c.course_name)}</option>`).join("");
+            }
+            const resP = await apiRequest("/api/programs");
+            if (resP && resP.ok) {
+                const progs = await resP.json();
+                document.getElementById("class-prog").innerHTML = progs.map(p => `<option value="${p.program_id}">${escapeHtml(p.program_name)}</option>`).join("");
+            }
+            const resT = await apiRequest("/api/teachers");
+            if (resT && resT.ok) {
+                const teachers = await resT.json();
+                document.getElementById("class-staff").innerHTML = teachers.map(t => `<option value="${t.staff_id}">${escapeHtml(t.staff_name)}</option>`).join("");
+            }
+            openModal("class-modal");
+        }
+    </script>
+</body>
+</html>

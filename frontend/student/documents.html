@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Documents - BLDEA Student</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/dashboard.css">
+    <link rel="stylesheet" href="/css/responsive.css">
+    <script src="/js/api.js"></script>
+    <script src="/js/auth.js"></script>
+    <script src="/js/student.js"></script>
+</head>
+<body>
+    <div class="app-container">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <span class="brand-title">🎓 Student Portal</span>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="/student/dashboard.html" class="nav-item">📊 Dashboard</a>
+                <a href="/student/profile.html" class="nav-item">👤 My Profile</a>
+                <a href="/student/attendance.html" class="nav-item">📅 Attendance</a>
+                <a href="/student/marks.html" class="nav-item">📝 Internal Marks</a>
+                <a href="/student/materials.html" class="nav-item">📖 Study Materials</a>
+                <a href="/student/announcements.html" class="nav-item">📢 Announcements</a>
+                <a href="/student/documents.html" class="nav-item active">📁 Documents</a>
+                <a href="javascript:logout()" class="nav-item logout">🚪 Logout</a>
+            </nav>
+        </aside>
+
+        <div class="main-wrapper">
+            <header class="header-topbar">
+                <div class="topbar-left">
+                    <button class="toggle-sidebar-btn" onclick="document.querySelector('.sidebar').classList.toggle('mobile-open')">☰</button>
+                    <h2>My Academic Documents & Receipts</h2>
+                </div>
+                <div class="topbar-right">
+                    <button class="btn btn-primary" onclick="openModal('upload-doc-modal')">+ Upload Document</button>
+                </div>
+            </header>
+
+            <main class="main-content">
+                <div class="card">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Document Type</th>
+                                    <th>Uploaded File</th>
+                                    <th>Verification Status</th>
+                                    <th>Rejection Reason</th>
+                                    <th>Receipt Number</th>
+                                    <th>Upload Date</th>
+                                </tr>
+                            </thead>
+                            <tbody id="student-documents-tbody">
+                                <tr><td colspan="6" style="text-align:center;color:var(--text-muted);">Loading documents...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Upload Document Modal -->
+    <div id="upload-doc-modal" class="modal-backdrop">
+        <div class="modal">
+            <div class="modal-header">
+                <h3>Upload Required Document</h3>
+                <button class="modal-close" onclick="closeModal('upload-doc-modal')">×</button>
+            </div>
+            <form onsubmit="uploadStudentDocument(event)">
+                <div class="form-group">
+                    <label>Document Type *</label>
+                    <select id="doc-type" class="form-control" required>
+                        <option value="10th Marks Card">10th Marks Card</option>
+                        <option value="12th / PUC Marks Card">12th / PUC Marks Card</option>
+                        <option value="Transfer Certificate">Transfer Certificate</option>
+                        <option value="Caste Certificate">Caste Certificate</option>
+                        <option value="Income Certificate">Income Certificate</option>
+                        <option value="Aadhaar Card">Aadhaar Card</option>
+                        <option value="Passport Size Photo">Passport Size Photo</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Select Document File * (PDF, PNG, JPG)</label>
+                    <input type="file" id="doc-file" class="form-control" required>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('upload-doc-modal')">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Upload Document</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            if (checkAuth(["STUDENT"])) {
+                loadStudentDocuments();
+            }
+        });
+    </script>
+</body>
+</html>
+

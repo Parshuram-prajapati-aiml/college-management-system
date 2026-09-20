@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - BLDEA College Management System</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <script src="/js/api.js"></script>
+    <script src="/js/auth.js"></script>
+    <style>
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+        }
+        .login-card {
+            width: 100%;
+            max-width: 420px;
+            background-color: var(--surface);
+            border-radius: var(--radius);
+            padding: 2.5rem;
+            box-shadow: var(--shadow-lg);
+        }
+        .login-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .login-header h2 {
+            font-size: 1.5rem;
+            color: var(--primary);
+            margin-bottom: 0.25rem;
+        }
+        .login-header p {
+            color: var(--text-muted);
+            font-size: 0.875rem;
+        }
+        .demo-box {
+            margin-top: 1.5rem;
+            padding: 1rem;
+            background-color: var(--background);
+            border: 1px border-dashed var(--border);
+            border-radius: var(--radius);
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+    </style>
+</head>
+<body>
+    <div class="login-card">
+        <div class="login-header">
+            <h2>BLDEA College</h2>
+            <p>Management System Portal</p>
+        </div>
+
+        <div id="login-error" class="badge badge-rejected" style="display:none;width:100%;padding:0.75rem;margin-bottom:1rem;text-align:center;"></div>
+
+        <form onsubmit="handleLogin(event)">
+            <div class="form-group">
+                <label for="username">Username or Email</label>
+                <input type="text" id="username" class="form-control" placeholder="Enter username or email" required autofocus>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" class="form-control" placeholder="Enter password" required>
+            </div>
+
+            <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem; padding: 0.75rem;">
+                Sign In to Portal
+            </button>
+        </form>
+
+        <div class="demo-box">
+            <strong style="display:block;margin-bottom:0.25rem;color:var(--text);">Demo Accounts (Click to Fill):</strong>
+            <ul style="list-style:none;padding:0;">
+                <li><a href="#" onclick="fillDemo('admin', 'admin123')">🔹 Admin: admin / admin123</a></li>
+                <li><a href="#" onclick="fillDemo('teacher1', 'teacher123')">🔹 Teacher: teacher1 / teacher123</a></li>
+                <li><a href="#" onclick="fillDemo('student1', 'student123')">🔹 Student: student1 / student123</a></li>
+                <li><a href="#" onclick="fillDemo('admission1', 'admission123')">🔹 Admission Officer: admission1 / admission123</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        function fillDemo(user, pwd) {
+            document.getElementById("username").value = user;
+            document.getElementById("password").value = pwd;
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Study Materials - BLDEA Student</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/dashboard.css">
+    <link rel="stylesheet" href="/css/responsive.css">
+    <script src="/js/api.js"></script>
+    <script src="/js/auth.js"></script>
+    <script src="/js/student.js"></script>
+</head>
+<body>
+    <div class="app-container">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <span class="brand-title">🎓 Student Portal</span>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="/student/dashboard.html" class="nav-item">📊 Dashboard</a>
+                <a href="/student/profile.html" class="nav-item">👤 My Profile</a>
+                <a href="/student/attendance.html" class="nav-item">📅 Attendance</a>
+                <a href="/student/marks.html" class="nav-item">📝 Internal Marks</a>
+                <a href="/student/materials.html" class="nav-item active">📖 Study Materials</a>
+                <a href="/student/announcements.html" class="nav-item">📢 Announcements</a>
+                <a href="/student/documents.html" class="nav-item">📁 Documents</a>
+                <a href="javascript:logout()" class="nav-item logout">🚪 Logout</a>
+            </nav>
+        </aside>
+
+        <div class="main-wrapper">
+            <header class="header-topbar">
+                <div class="topbar-left">
+                    <button class="toggle-sidebar-btn" onclick="document.querySelector('.sidebar').classList.toggle('mobile-open')">☰</button>
+                    <h2>Published Course Study Materials</h2>
+                </div>
+            </header>
+
+            <main class="main-content">
+                <div class="card">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Material Title</th>
+                                    <th>Course</th>
+                                    <th>Instructor</th>
+                                    <th>File Type</th>
+                                    <th>Download</th>
+                                </tr>
+                            </thead>
+                            <tbody id="student-materials-tbody">
+                                <tr><td colspan="5" style="text-align:center;color:var(--text-muted);">Loading study materials...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            if (checkAuth(["STUDENT"])) {
+                loadStudentMaterials();
+            }
+        });
+    </script>
+</body>
+</html>

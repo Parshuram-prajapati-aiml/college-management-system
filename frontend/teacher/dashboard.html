@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teacher Dashboard - BLDEA College</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/dashboard.css">
+    <link rel="stylesheet" href="/css/responsive.css">
+    <script src="/js/api.js"></script>
+    <script src="/js/auth.js"></script>
+    <script src="/js/teacher.js"></script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <span class="brand-title">👨‍🏫 Faculty Portal</span>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="/teacher/dashboard.html" class="nav-item active">📊 Dashboard</a>
+                <a href="/teacher/attendance.html" class="nav-item">📅 Attendance</a>
+                <a href="/teacher/marks.html" class="nav-item">📝 Marks</a>
+                <a href="/teacher/materials.html" class="nav-item">📖 Study Materials</a>
+                <a href="/teacher/announcements.html" class="nav-item">📢 Announcements</a>
+                <a href="javascript:logout()" class="nav-item logout">🚪 Logout</a>
+            </nav>
+        </aside>
+
+        <!-- Main Wrapper -->
+        <div class="main-wrapper">
+            <header class="header-topbar">
+                <div class="topbar-left">
+                    <button class="toggle-sidebar-btn" onclick="document.querySelector('.sidebar').classList.toggle('mobile-open')">☰</button>
+                    <h2>Teacher Dashboard</h2>
+                </div>
+                <div class="topbar-right">
+                    <div class="user-profile-badge">
+                        <div class="user-avatar">T</div>
+                        <div>
+                            <div class="current-user-name" style="font-weight:600;">Faculty</div>
+                            <div class="current-user-role" style="font-size:0.75rem;color:var(--text-muted);">TEACHER</div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <main class="main-content">
+                <!-- Stats -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">🏫</div>
+                        <div class="stat-info">
+                            <div class="stat-value" id="stat-my-classes">0</div>
+                            <div class="stat-label">Assigned Classes</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Actions & Announcements -->
+                <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(320px, 1fr));gap:1.5rem;">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Quick Actions</h3>
+                        </div>
+                        <div style="display:flex;flex-direction:column;gap:0.75rem;">
+                            <a href="/teacher/attendance.html" class="btn btn-primary">📅 Mark Class Attendance</a>
+                            <a href="/teacher/marks.html" class="btn btn-secondary">📝 Enter Internal Marks</a>
+                            <a href="/teacher/materials.html" class="btn btn-secondary">📖 Upload Study Material</a>
+                            <a href="/teacher/announcements.html" class="btn btn-secondary">📢 Post Announcement</a>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Recent Announcements</h3>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Title</th>
+                                        <th>Target</th>
+                                        <th>Date</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="teacher-ann-tbody">
+                                    <tr><td colspan="3" style="text-align:center;color:var(--text-muted);">Loading announcements...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            if (checkAuth(["TEACHER", "ADMIN"])) {
+                loadTeacherDashboard();
+            }
+        });
+    </script>
+</body>
+</html>

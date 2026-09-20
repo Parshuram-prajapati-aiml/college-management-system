@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Internal Marks - BLDEA Teacher</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/dashboard.css">
+    <link rel="stylesheet" href="/css/responsive.css">
+    <script src="/js/api.js"></script>
+    <script src="/js/auth.js"></script>
+    <script src="/js/teacher.js"></script>
+</head>
+<body>
+    <div class="app-container">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <span class="brand-title">👨‍🏫 Faculty Portal</span>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="/teacher/dashboard.html" class="nav-item">📊 Dashboard</a>
+                <a href="/teacher/attendance.html" class="nav-item">📅 Attendance</a>
+                <a href="/teacher/marks.html" class="nav-item active">📝 Marks</a>
+                <a href="/teacher/materials.html" class="nav-item">📖 Study Materials</a>
+                <a href="/teacher/announcements.html" class="nav-item">📢 Announcements</a>
+                <a href="javascript:logout()" class="nav-item logout">🚪 Logout</a>
+            </nav>
+        </aside>
+
+        <div class="main-wrapper">
+            <header class="header-topbar">
+                <div class="topbar-left">
+                    <button class="toggle-sidebar-btn" onclick="document.querySelector('.sidebar').classList.toggle('mobile-open')">☰</button>
+                    <h2>Internal Marks & Assessment Entry</h2>
+                </div>
+            </header>
+
+            <main class="main-content">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Enter Student Internal Marks</h3>
+                    </div>
+                    <form id="marks-form" onsubmit="saveStudentMarks(event)">
+                        <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));gap:1rem;">
+                            <div class="form-group">
+                                <label>Class Section *</label>
+                                <select id="marks-class-select" class="form-control" onchange="loadTeacherMarksList()" required>
+                                    <option value="">-- Select Class --</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Student *</label>
+                                <select id="marks-student-select" class="form-control" required>
+                                    <option value="">-- Select Student --</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Assessment Name * (e.g. IA-1, Mid-Sem)</label>
+                                <input type="text" id="marks-assessment" class="form-control" placeholder="IA-1" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Semester *</label>
+                                <input type="text" id="marks-semester" class="form-control" value="Semester 5" required>
+                            </div>
+                        </div>
+
+                        <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(160px, 1fr));gap:1rem;margin-top:0.5rem;">
+                            <div class="form-group">
+                                <label>Internal Test Marks (Max 40)</label>
+                                <input type="number" step="0.5" id="marks-internal" class="form-control" value="0">
+                            </div>
+                            <div class="form-group">
+                                <label>Assignment Marks (Max 10)</label>
+                                <input type="number" step="0.5" id="marks-assignment" class="form-control" value="0">
+                            </div>
+                            <div class="form-group">
+                                <label>Exam Marks (Max 50)</label>
+                                <input type="number" step="0.5" id="marks-exam" class="form-control" value="0">
+                            </div>
+                            <div class="form-group">
+                                <label>Remarks</label>
+                                <input type="text" id="marks-remarks" class="form-control" placeholder="Optional">
+                            </div>
+                        </div>
+
+                        <div style="margin-top:1rem;text-align:right;">
+                            <button type="submit" class="btn btn-primary">Save Marks</button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Existing Marks List Table -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Recorded Assessment Marks</h3>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Student</th>
+                                    <th>Assessment</th>
+                                    <th>IA Marks</th>
+                                    <th>Assignment</th>
+                                    <th>Exam</th>
+                                    <th>Total</th>
+                                    <th>Grade</th>
+                                </tr>
+                            </thead>
+                            <tbody id="marks-list-tbody">
+                                <tr><td colspan="7" style="text-align:center;color:var(--text-muted);">Select class to view records.</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            if (checkAuth(["TEACHER", "ADMIN"])) {
+                loadTeacherMarksPage();
+            }
+        });
+    </script>
+</body>
+</html>

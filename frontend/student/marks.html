@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Internal Marks - BLDEA Student</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/dashboard.css">
+    <link rel="stylesheet" href="/css/responsive.css">
+    <script src="/js/api.js"></script>
+    <script src="/js/auth.js"></script>
+    <script src="/js/student.js"></script>
+</head>
+<body>
+    <div class="app-container">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <span class="brand-title">🎓 Student Portal</span>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="/student/dashboard.html" class="nav-item">📊 Dashboard</a>
+                <a href="/student/profile.html" class="nav-item">👤 My Profile</a>
+                <a href="/student/attendance.html" class="nav-item">📅 Attendance</a>
+                <a href="/student/marks.html" class="nav-item active">📝 Internal Marks</a>
+                <a href="/student/materials.html" class="nav-item">📖 Study Materials</a>
+                <a href="/student/announcements.html" class="nav-item">📢 Announcements</a>
+                <a href="/student/documents.html" class="nav-item">📁 Documents</a>
+                <a href="javascript:logout()" class="nav-item logout">🚪 Logout</a>
+            </nav>
+        </aside>
+
+        <div class="main-wrapper">
+            <header class="header-topbar">
+                <div class="topbar-left">
+                    <button class="toggle-sidebar-btn" onclick="document.querySelector('.sidebar').classList.toggle('mobile-open')">☰</button>
+                    <h2>Internal Marks Grade Sheet</h2>
+                </div>
+            </header>
+
+            <main class="main-content">
+                <div class="card">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Course</th>
+                                    <th>Assessment</th>
+                                    <th>Internal</th>
+                                    <th>Assignment</th>
+                                    <th>Exam</th>
+                                    <th>Total</th>
+                                    <th>Grade</th>
+                                    <th>Remarks</th>
+                                </tr>
+                            </thead>
+                            <tbody id="student-marks-tbody">
+                                <tr><td colspan="8" style="text-align:center;color:var(--text-muted);">Loading internal marks...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            if (checkAuth(["STUDENT"])) {
+                loadStudentMarks();
+            }
+        });
+    </script>
+</body>
+</html>

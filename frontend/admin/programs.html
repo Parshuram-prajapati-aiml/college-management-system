@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Programs Management - BLDEA Admin</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/dashboard.css">
+    <link rel="stylesheet" href="/css/responsive.css">
+    <script src="/js/api.js"></script>
+    <script src="/js/auth.js"></script>
+    <script src="/js/admin.js"></script>
+</head>
+<body>
+    <div class="app-container">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <span class="brand-title">🏛️ BLDEA Admin</span>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="/admin/dashboard.html" class="nav-item">📊 Dashboard</a>
+                <a href="/admin/users.html" class="nav-item">👤 Users</a>
+                <a href="/admin/students.html" class="nav-item">🎓 Students</a>
+                <a href="/admin/teachers.html" class="nav-item">👨‍🏫 Teachers</a>
+                <a href="/admin/departments.html" class="nav-item">🏢 Departments</a>
+                <a href="/admin/programs.html" class="nav-item active">📜 Programs</a>
+                <a href="/admin/courses.html" class="nav-item">📚 Courses</a>
+                <a href="/admin/classes.html" class="nav-item">🏫 Classes</a>
+                <a href="/admin/admissions.html" class="nav-item">📝 Admissions</a>
+                <a href="/admin/documents.html" class="nav-item">📁 Documents</a>
+                <a href="javascript:logout()" class="nav-item logout">🚪 Logout</a>
+            </nav>
+        </aside>
+
+        <div class="main-wrapper">
+            <header class="header-topbar">
+                <div class="topbar-left">
+                    <button class="toggle-sidebar-btn" onclick="document.querySelector('.sidebar').classList.toggle('mobile-open')">☰</button>
+                    <h2>Academic Programs</h2>
+                </div>
+                <div class="topbar-right">
+                    <button class="btn btn-primary" onclick="openAddProgramModal()">+ Add Program</button>
+                </div>
+            </header>
+
+            <main class="main-content">
+                <div class="card">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Code</th>
+                                    <th>Program Name</th>
+                                    <th>Department</th>
+                                    <th>Degree</th>
+                                    <th>Duration</th>
+                                    <th>Capacity</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="programs-tbody">
+                                <tr><td colspan="7" style="text-align:center;color:var(--text-muted);">Loading programs...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Program Modal -->
+    <div id="program-modal" class="modal-backdrop">
+        <div class="modal">
+            <div class="modal-header">
+                <h3>Add Academic Program</h3>
+                <button class="modal-close" onclick="closeModal('program-modal')">×</button>
+            </div>
+            <form onsubmit="saveProgram(event)">
+                <div class="form-group">
+                    <label>Department *</label>
+                    <select id="prog-dept" class="form-control" required></select>
+                </div>
+                <div class="form-group">
+                    <label>Program Code * (e.g. BTECH-CSE)</label>
+                    <input type="text" id="prog-code" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label>Program Name *</label>
+                    <input type="text" id="prog-name" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label>Degree Type *</label>
+                    <select id="prog-degree" class="form-control">
+                        <option value="UG">UG (Undergraduate)</option>
+                        <option value="PG">PG (Postgraduate)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Duration (Years)</label>
+                    <input type="number" id="prog-duration" class="form-control" value="4" required>
+                </div>
+                <div class="form-group">
+                    <label>Student Capacity</label>
+                    <input type="number" id="prog-capacity" class="form-control" value="60" required>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('program-modal')">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Program</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            if (checkAuth(["ADMIN"])) {
+                loadPrograms();
+            }
+        });
+
+        async function openAddProgramModal() {
+            const res = await apiRequest("/api/departments");
+            if (res && res.ok) {
+                const depts = await res.json();
+                document.getElementById("prog-dept").innerHTML = depts.map(d => `<option value="${d.department_id}">${escapeHtml(d.department_name)}</option>`).join("");
+            }
+            openModal("program-modal");
+        }
+    </script>
+</body>
+</html>

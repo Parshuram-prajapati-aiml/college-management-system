@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - BLDEA College</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/dashboard.css">
+    <link rel="stylesheet" href="/css/responsive.css">
+    <script src="/js/api.js"></script>
+    <script src="/js/auth.js"></script>
+    <script src="/js/admin.js"></script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <span class="brand-title">🏛️ BLDEA Admin</span>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="/admin/dashboard.html" class="nav-item active">📊 Dashboard</a>
+                <a href="/admin/users.html" class="nav-item">👤 Users</a>
+                <a href="/admin/students.html" class="nav-item">🎓 Students</a>
+                <a href="/admin/teachers.html" class="nav-item">👨‍🏫 Teachers</a>
+                <a href="/admin/departments.html" class="nav-item">🏢 Departments</a>
+                <a href="/admin/programs.html" class="nav-item">📜 Programs</a>
+                <a href="/admin/courses.html" class="nav-item">📚 Courses</a>
+                <a href="/admin/classes.html" class="nav-item">🏫 Classes</a>
+                <a href="/admin/admissions.html" class="nav-item">📝 Admissions</a>
+                <a href="/admin/documents.html" class="nav-item">📁 Documents</a>
+                <a href="javascript:logout()" class="nav-item logout">🚪 Logout</a>
+            </nav>
+        </aside>
+
+        <!-- Main Wrapper -->
+        <div class="main-wrapper">
+            <header class="header-topbar">
+                <div class="topbar-left">
+                    <button class="toggle-sidebar-btn" onclick="document.querySelector('.sidebar').classList.toggle('mobile-open')">☰</button>
+                    <h2>Admin Overview</h2>
+                </div>
+                <div class="topbar-right">
+                    <div class="user-profile-badge">
+                        <div class="user-avatar">A</div>
+                        <div>
+                            <div class="current-user-name" style="font-weight:600;">Admin</div>
+                            <div class="current-user-role" style="font-size:0.75rem;color:var(--text-muted);">ADMIN</div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <main class="main-content">
+                <!-- Statistics Grid -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">🎓</div>
+                        <div class="stat-info">
+                            <div class="stat-value" id="stat-students">0</div>
+                            <div class="stat-label">Total Students</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">👨‍🏫</div>
+                        <div class="stat-info">
+                            <div class="stat-value" id="stat-teachers">0</div>
+                            <div class="stat-label">Total Teachers</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">🏢</div>
+                        <div class="stat-info">
+                            <div class="stat-value" id="stat-departments">0</div>
+                            <div class="stat-label">Departments</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">📜</div>
+                        <div class="stat-info">
+                            <div class="stat-value" id="stat-programs">0</div>
+                            <div class="stat-label">Programs</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">📚</div>
+                        <div class="stat-info">
+                            <div class="stat-value" id="stat-courses">0</div>
+                            <div class="stat-label">Courses</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">🏫</div>
+                        <div class="stat-info">
+                            <div class="stat-value" id="stat-classes">0</div>
+                            <div class="stat-label">Classes</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">📝</div>
+                        <div class="stat-info">
+                            <div class="stat-value" id="stat-pending-admissions">0</div>
+                            <div class="stat-label">Pending Admissions</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">📁</div>
+                        <div class="stat-info">
+                            <div class="stat-value" id="stat-pending-docs">0</div>
+                            <div class="stat-label">Pending Documents</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Activity Tables -->
+                <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(400px, 1fr));gap:1.5rem;">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Recent Applications</h3>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>App #</th>
+                                        <th>Applicant</th>
+                                        <th>Program</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="recent-apps-tbody">
+                                    <tr><td colspan="4" style="text-align:center;color:var(--text-muted);">Loading...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Recent Announcements</h3>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Title</th>
+                                        <th>Target</th>
+                                        <th>Date</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="recent-ann-tbody">
+                                    <tr><td colspan="3" style="text-align:center;color:var(--text-muted);">Loading...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            if (checkAuth(["ADMIN"])) {
+                loadAdminDashboard();
+            }
+        });
+    </script>
+</body>
+</html>
